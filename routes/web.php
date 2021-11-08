@@ -27,5 +27,5 @@ require __DIR__.'/auth.php';
 
 
 Route::group(['as'=>'app.', 'prefix'=>'app'], function(){
-    Route::get('/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 });
