@@ -10,10 +10,10 @@ class Permission extends Model
     use HasFactory;
 
     public function module(){
-        $this->belongsTo(Module::class);
+        return $this->belongsTo(Module::class);
     }
 
     public function roles(){
-        $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Permission::class);
     }
 }
