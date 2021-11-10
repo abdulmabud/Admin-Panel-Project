@@ -42,13 +42,19 @@
             <tbody class="text-center">
                 @foreach ($roles as $key=>$role)  
                 <tr>
-                  <td>{{ $key }}.</td>
+                  <td>{{ $key+1 }}.</td>
                   <td>{{ $role->name }}</td>
                   <td class="badge {{ $role->permissions->count()>0 ? 'badge-primary':'badge-danger' }}">{{ $role->permissions->count()>0 ? $role->permissions->count():'No Permission Found' }}</td>
                   <td>{{ $role->updated_at->diffForHumans() }}</td>
                   <td>
                       <a href="{{ route('app.roles.edit', $role->id) }}" class="btn-sm btn-primary"><i class="fas fa-edit"></i> Edit</a>
-                      <a href="{{ route('app.roles.edit', $role->id) }}" class="btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                      <a href="#" class="btn-sm btn-danger"
+                      onclick="event.preventDefault(); deleteData({{ $role->id }});"
+                      ><i class="fas fa-trash"></i> Delete</a>
+                      <form action="{{ route('app.roles.destroy', $role->id) }}" method="POST" id="{{ 'delete-form-'.$role->id }}">
+                        @csrf
+                        @method('DELETE')
+                      </form>
                   </td>
                 </tr>
                 @endforeach

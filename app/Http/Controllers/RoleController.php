@@ -76,7 +76,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['role'] = Role::find($id);
+        $data['modules'] = Module::all();
+        return view('app.role.edit', $data);
     }
 
     /**
@@ -86,9 +88,23 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:50',
+            'permissions' => 'required|array',
+            'permissions.*' => 'integer'
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        
+        $role->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+        $role->permissions()->sync($request->input('permissions'));
+        return redirect()->route('app.roles.index');
     }
 
     /**
@@ -97,8 +113,14 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+        if($role->deleteable){
+            $role->permissions()->detach();
+            $role->delete();
+        }else{
+
+        }
+        return back();
     }
 }
