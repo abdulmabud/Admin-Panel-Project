@@ -54,6 +54,7 @@ class RoleController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name),
         ])->permissions()->sync($request->input('permissions'));
+        notify()->success('Role Created Suceessfully', 'Success');
         return redirect()->route('app.roles.index');
     }
 
@@ -104,6 +105,7 @@ class RoleController extends Controller
             'slug' => Str::slug($request->name),
         ]);
         $role->permissions()->sync($request->input('permissions'));
+        notify()->success('Role Updated Suceessfully', 'Success');
         return redirect()->route('app.roles.index');
     }
 
@@ -121,6 +123,7 @@ class RoleController extends Controller
         }else{
 
         }
+        notify()->success('Role Delete Suceessfully', 'Success');
         return back();
     }
 }

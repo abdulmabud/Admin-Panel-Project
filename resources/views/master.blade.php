@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
+    <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
     @stack('css')
 </head>
 
@@ -104,6 +105,8 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/iziToast.js') }}"></script>
+    @include('vendor.lara-izitoast.toast')
     <script src="{{ asset('js/custom.js') }}"></script>
     @stack('js')
 </body>
