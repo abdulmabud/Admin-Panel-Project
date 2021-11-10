@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,5 @@ require __DIR__.'/auth.php';
 
 Route::group(['as'=>'app.', 'prefix'=>'app'], function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('role', RoleController::class);
 });

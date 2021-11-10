@@ -19,6 +19,7 @@ class CreatePermissionsTable extends Migration
             $table->string('name', 100);
             $table->string('slug', 100)->unique();
             $table->timestamps();
+            $table->foreign('module_id')->references('id')->on('modules');
         });
     }
 
