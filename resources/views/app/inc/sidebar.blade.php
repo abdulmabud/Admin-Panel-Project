@@ -36,6 +36,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('app.users.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Users
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
