@@ -53,7 +53,7 @@ class UserController extends Controller
             'name' => $request->name,
             'role_id' => $request->role_id,
             'email' => $request->email,
-            'password' => Hash::make($request->email),
+            'password' => Hash::make($request->password),
             'status' => $request->status != null ? 1:0
         ]);
         notify()->success('User Created Successfully', 'Success');
@@ -79,7 +79,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['user'] = User::find($id);
+        $data['roles'] = Role::all();
+        return view('app.user.edit', $data);
     }
 
     /**
@@ -89,9 +91,25 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'email' => 'required|email',
+            'role_id' => 'required'
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $user->update([
+            'name' => $request->name,
+            'role_id' => $request->role_id,
+            'email' => $request->email,
+            'password' => $request->password != null ? Hash::make($request->password):$user->password,
+            'status' => $request->status != null ? 1:0
+        ]);
+        notify()->success('User Update Successfully', 'Success');
+        return redirect()->route('app.users.index');
     }
 
     /**
@@ -100,8 +118,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        if($user->delete()){
+            notify()->success('User Deleted Successfully', 'Succeess');
+        }
+        return back();
     }
 }
