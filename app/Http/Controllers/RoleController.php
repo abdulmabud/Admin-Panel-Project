@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Module;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
@@ -13,7 +18,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $data['roles'] = Role::with('permissions')->get();
+        return view('app.role.index', $data);
     }
 
     /**
@@ -23,7 +29,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $data['modules'] = Module::all();
+        return view('app.role.create', $data);
     }
 
     /**
@@ -34,7 +41,20 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:50',
+            'permissions' => 'required|array',
+            'permissions.*' => 'integer'
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        Role::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ])->permissions()->sync($request->input('permissions'));
+        return redirect()->route('app.roles.index');
     }
 
     /**

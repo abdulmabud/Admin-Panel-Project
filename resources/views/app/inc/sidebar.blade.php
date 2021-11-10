@@ -21,10 +21,18 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{ route('app.dashboard') }}" class="nav-link">
               <i class="nav-icon fas fa-columns"></i>
               <p>
                 Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('app.roles.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-check"></i>
+              <p>
+                Roles
               </p>
             </a>
           </li>
