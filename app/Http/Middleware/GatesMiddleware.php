@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class GatesMiddleware
 {
@@ -16,6 +19,15 @@ class GatesMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        $user = Auth::user();
+        if($user){
+            $permissions = Permission::all();
+            foreach ($permissions as $key => $permission) {
+                Gate::define($permission->slug, function($user) use($permission){
+                   return $user->hasPermission($user, $permission->slug);
+                });
+            }
+        }
         return $next($request);
     }
 }
