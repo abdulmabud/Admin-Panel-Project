@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         User::updateOrCreate([
             'role_id' => Role::where('slug', 'admin')->first()->id,
             'name' => 'Admin',
-            'email' => 'admin@abdulmaubd.com',
+            'email' => 'admin@abdulmabud.com',
             'password' => Hash::make('admin@123'),
         ]);
 
