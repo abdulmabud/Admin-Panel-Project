@@ -6,6 +6,7 @@ use App\Models\Module;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -18,6 +19,7 @@ class RoleController extends Controller
      */
     public function index()
     {
+        Gate::authorize('app.role.index');
         $data['roles'] = Role::with('permissions')->get();
         return view('app.role.index', $data);
     }
@@ -29,6 +31,7 @@ class RoleController extends Controller
      */
     public function create()
     {
+        Gate::authorize('app.role.create');
         $data['modules'] = Module::all();
         return view('app.role.create', $data);
     }
@@ -41,6 +44,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('app.role.create');
         $validator = Validator::make($request->all(),[
             'name' => 'required|max:50',
             'permissions' => 'required|array',
@@ -77,6 +81,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('app.role.edit');
         $data['role'] = Role::find($id);
         $data['modules'] = Module::all();
         return view('app.role.edit', $data);
@@ -91,6 +96,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        Gate::authorize('app.role.edit');
         $validator = Validator::make($request->all(),[
             'name' => 'required|max:50',
             'permissions' => 'required|array',
@@ -117,6 +123,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        Gate::authorize('app.role.destroy');
         if($role->deleteable){
             $role->permissions()->detach();
             $role->delete();

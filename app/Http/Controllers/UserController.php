@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,6 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        Gate::authorize('app.user.index');
         $data['users'] = User::all();
         return view('app.user.index', $data);
     }
@@ -28,6 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        Gate::authorize('app.user.create');
         $data['roles'] = Role::all();
         return view('app.user.create', $data);
     }
@@ -40,6 +43,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('app.user.create');
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50',
             'email' => 'required|email',
@@ -79,6 +83,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('app.user.edit');
         $data['user'] = User::find($id);
         $data['roles'] = Role::all();
         return view('app.user.edit', $data);
@@ -93,6 +98,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        Gate::authorize('app.user.edit');
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50',
             'email' => 'required|email',
@@ -120,6 +126,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Gate::authorize('app.user.destroy');
         if($user->delete()){
             notify()->success('User Deleted Successfully', 'Succeess');
         }
